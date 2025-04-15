@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+  <title>MyLibraPy Web</title>
+</head>
+<body>
+  <h1>My Books</h1>
+  <form method="POST">
+    <input name="title" placeholder="Title" required>
+    <input name="author" placeholder="Author" required>
+    <button type="submit">Add</button>
+  </form>
+  <ul>
+    {% for title, author in books %}
+      <li><strong>{{ title }}</strong> by {{ author }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
