@@ -1,10 +1,11 @@
 import os
 from flask import Flask, render_template, request, redirect
-from templates.static.mylibrapy.logic import (
-    load_books, add_book, search_books
+from mylibrapy.logic import (
+    load_books, add_book, search_books, init_db
 )
 
 app = Flask(__name__)
+init_db()
 
 @app.route("/", methods=["GET", "POST"])
 def index():
