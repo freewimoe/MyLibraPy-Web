@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search MyLibraPy</title>
+</head>
+<body>
+  <h1>🔎 Search Results</h1>
+
+  <form method="GET" action="/search">
+    <input type="text" name="q" placeholder="Search title, author, genre..." value="{{ query }}">
+    <button type="submit">Search</button>
+    <a href="/">← Back</a>
+  </form>
+
+  {% if books %}
+    <p>Found {{ books|length }} result(s):</p>
+    <ul>
+    {% for book in books %}
+      <li><strong>{{ book.title }}</strong> by {{ book.author }}
+          {% if book.genre %} – {{ book.genre }}{% endif %}
+          {% if book.status %} ({{ book.status }}){% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <p>No results found for <strong>{{ query }}</strong>.</p>
+  {% endif %}
+</body>
+</html>

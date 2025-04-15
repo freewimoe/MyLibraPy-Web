@@ -1,29 +1,34 @@
 import os
 from flask import Flask, render_template, request, redirect
-import sqlite3
+from templates.static.mylibrapy.logic import (
+    load_books, add_book
+)
 
 app = Flask(__name__)
-
-DB = "books.db"
-
-def init_db():
-    with sqlite3.connect(DB) as conn:
-        conn.execute("CREATE TABLE IF NOT EXISTS books (title TEXT, author TEXT)")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         title = request.form["title"]
         author = request.form["author"]
-        with sqlite3.connect(DB) as conn:
-            conn.execute("INSERT INTO books (title, author) VALUES (?, ?)", (title, author))
+        genre = request.form.get("genre", "")
+        status = request.form.get("status", "")
+        add_book(title, author, genre, status)
         return redirect("/")
-    
-    with sqlite3.connect(DB) as conn:
-        books = conn.execute("SELECT title, author FROM books").fetchall()
+
+    books = load_books()
     return render_template("index.html", books=books)
 
 if __name__ == "__main__":
-    init_db()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+from templates.static.mylibrapy.logic import (
+    load_books, add_book, search_books
+)
+
+@app.route("/search")
+def search():
+    keyword = request.args.get("q", "")
+    results = search_books(keyword) if keyword else []
+    return render_template("search.html", books=results, query=keyword)
