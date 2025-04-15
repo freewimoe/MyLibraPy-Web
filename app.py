@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect
 from templates.static.mylibrapy.logic import (
-    load_books, add_book
+    load_books, add_book, search_books
 )
 
 app = Flask(__name__)
@@ -19,16 +19,12 @@ def index():
     books = load_books()
     return render_template("index.html", books=books)
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
-from templates.static.mylibrapy.logic import (
-    load_books, add_book, search_books
-)
-
 @app.route("/search")
 def search():
     keyword = request.args.get("q", "")
     results = search_books(keyword) if keyword else []
     return render_template("search.html", books=results, query=keyword)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)  # debug=True für Auto-Reload

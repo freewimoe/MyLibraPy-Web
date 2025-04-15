@@ -92,3 +92,4 @@ def get_statistics():
         "genres": dict(genres),
         "statuses": dict(statuses)
     }
+    
